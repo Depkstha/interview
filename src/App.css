@@ -1,0 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Mona+Sans:wdth,wght@75..100,200..700&display=swap');
+
+:root {
+  --font-mona-sans: 'Mona Sans', sans-serif;
+}
+
+body {
+  font-family: var(--font-mona-sans);
+}
