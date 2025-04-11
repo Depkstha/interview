@@ -1,5 +1,5 @@
 import AuthForm from "@/components/AuthForm";
-import GuestLayout from "../layouts/GuestLayout";
+import GuestLayout from "../../layouts/GuestLayout";
 
 const SignUpForm = () => {
   return (

@@ -2,22 +2,18 @@ import { useMutation } from '@tanstack/react-query';
 import { axiosInstance } from '@/lib/axiosInstance';
 import { useAuthStore } from '@/stores/authStore';
 import { queryClient } from '@/lib/queryClient';
+import { LogInParams } from '@/types';
 
-type LoginData = {
-  email: string;
-  password: string;
-};
 
 export const useLogin = () => {
-  const setToken = useAuthStore((state) => state.setToken);
 
   return useMutation({
-    mutationFn: async (data: LoginData) => {
+    mutationFn: async (data: LogInParams) => {
       const response = await axiosInstance.post('/login', data);
-      return response.data;
+      return response.data?.data;
     },
     onSuccess: (data) => {
-      setToken(data.token);
+      useAuthStore.getState().setAuth(data.token, data.user);
       queryClient.invalidateQueries({ queryKey: ['user'] });
     },
   });

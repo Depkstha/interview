@@ -1,7 +1,9 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import "./App.css";
 import SignUpForm from "./app/auth/components/SignUpForm";
-import LogInForm from "./app/auth/components/LoginForm";
+import LogInForm from "./app/auth/components/LogInForm";
+import ProtectedRoute from "./components/ProtectedRoute";
+import Home from "./app/pages/Home";
 
 function App() {
   return (
@@ -10,6 +12,9 @@ function App() {
         <Routes>
           <Route path="/log-in" element={<LogInForm />} />
           <Route path="/sign-up" element={<SignUpForm />} />
+          <Route element={<ProtectedRoute />}>
+            <Route path="/" element={<Home />} />
+          </Route>
         </Routes>
       </Router>
     </>
