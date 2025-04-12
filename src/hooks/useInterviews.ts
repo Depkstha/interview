@@ -1,6 +1,7 @@
+import { queryClient } from "@/lib/queryClient";
 import { useInterviewsApi } from "@/services/interviewServices";
 import { useAuthStore } from "@/stores/authStore";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 
 // Fetch All Scheduled Interviews
@@ -21,15 +22,23 @@ export function useInterviewSessions(id: number) {
   });
 }
 
+export function useInterviewSessionByUUID(uuid: string) {
+  const { getInterviewSessionByUUID } = useInterviewsApi();
+  return useQuery({
+    queryKey: ["interview-session", uuid],
+    queryFn: () => getInterviewSessionByUUID(uuid),
+    enabled: !!uuid,
+  });
+}
+
 //Start a session
 export function useStartInterviewSession() {
   const { user } = useAuthStore();
   const navigate = useNavigate();
   const { startInterviewSession } = useInterviewsApi();
-  const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ id }: { id: string }) => startInterviewSession(id),
+    mutationFn: ({ uuid }: { uuid: string }) => startInterviewSession(uuid),
     onSuccess: (data) => {
       navigate(`/interview/session/${data.session.uuid}`, {
         state: { session: data.session, interview: data.interview },
@@ -49,10 +58,9 @@ export function useStartInterviewSession() {
 export function useStopInterviewSession() {
   const { user } = useAuthStore();
   const { stopInterviewSession } = useInterviewsApi();
-  const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ id, data }: { id: string; data: object }) => stopInterviewSession(id, data),
+    mutationFn: ({ uuid, data }: { uuid: string; data: object }) => stopInterviewSession(uuid, data),
     onSuccess: () => {
 
       queryClient.invalidateQueries({ queryKey: ["interview-sessions", user?.id] });

@@ -11,10 +11,10 @@ const InterviewCard = ({
   categories,
   description,
 }: InterviewCardProps) => {
-  const { mutate: startSession, isLoading } = useStartInterviewSession();
+  const { mutate: startSession, isPending } = useStartInterviewSession();
 
   const handleStartInterviewSession = (interviewId: string) => {
-    startSession({ id: interviewId });
+    startSession({ uuid: interviewId });
   };
 
   const formattedDate = dayjs(createdAt || Date.now()).format("MMM D, YYYY");
@@ -23,7 +23,7 @@ const InterviewCard = ({
     <div className="card-border w-full max-sm:w-full min-h-96">
       <div className="card-interview">
         <div>
-          {/* Type Badge */}
+          {/* Country Badge */}
           <div className="absolute top-0 right-0 w-fit px-4 py-2 rounded-bl-lg bg-light-800">
             <p className="badge-text">UK</p>
           </div>
@@ -41,7 +41,7 @@ const InterviewCard = ({
             </div>
 
             <div>
-              {/* Interview Role */}
+              {/* Interview title */}
               <h3 className="mt-5 capitalize">{title} Interview</h3>
 
               {/* Date & Score */}
@@ -64,9 +64,9 @@ const InterviewCard = ({
             </div>
           </div>
 
-          {/* Feedback or Placeholder Text */}
+          {/* Description */}
           <article
-            className="prose prose-lg dark:prose-invert max-w-none mt-5"
+            className="prose lg:prose-xl dark:prose-invert max-w-none mt-5"
             dangerouslySetInnerHTML={{ __html: description }}
           />
         </div>
@@ -76,10 +76,10 @@ const InterviewCard = ({
         <div className="flex flex-row justify-between mt-0">
           <Button
             onClick={() => handleStartInterviewSession(interviewId)}
-            disabled={isLoading}
+            disabled={isPending}
             className="btn-primary w-full"
           >
-            {isLoading ? "Starting..." : "Start Interview"}
+            {isPending ? "Starting..." : "Start Interview"}
           </Button>
         </div>
       </div>

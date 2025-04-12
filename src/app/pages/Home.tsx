@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import InterviewCard from "@/components/InterviewCard";
 import { Skeleton } from "@/components/ui/skeleton";
+import InterviewSessionCard from "@/components/InterviewSessionCard";
 
 const Home = () => {
   const { user } = useAuthStore();
@@ -21,7 +22,7 @@ const Home = () => {
   const {
     data: interviewSessionResponse,
     error: interviewSessionsError,
-    // isLoading: interviewSessionsLoading,
+    isLoading: interviewSessionsLoading,
   } = useInterviewSessions((user as User).id);
 
   const interviews = interviewResponse?.data ?? [];
@@ -99,27 +100,37 @@ const Home = () => {
         </div>
       </section>
 
-      {/* <section className="flex flex-col gap-6 mt-8">
-        <h2>Your Interviews</h2>
+      <section className="flex flex-col gap-6 mt-8">
+        <h2>Your Interview Sessions With Feedback</h2>
 
         <div className="interviews-section">
-          {hasPastInterviews ? (
-            userInterviews?.map((interview) => (
-              <InterviewCard
-                key={interview.id}
-                userId={user?.id}
-                interviewId={interview.id}
-                role={interview.role}
-                type={interview.type}
-                techstack={interview.techstack}
-                createdAt={interview.createdAt}
-              />
-            ))
+          {interviewSessionsLoading ? (
+            Array(3)
+              .fill(0)
+              .map((_, i) => (
+                <Skeleton
+                  key={i}
+                  className="h-[200px] w-[360px] max-sm:w-full rounded-xl"
+                />
+              ))
+          ) : hasInterviewSessions ? (
+            interviewSessions?.map(
+              ({ interview: { categories, title }, feedback, ...session }) => (
+                <InterviewSessionCard
+                  key={session.id}
+                  title={title}
+                  feedback={feedback}
+                  interviewSessionId={session.uuid}
+                  categories={categories}
+                  completedAt={session.completedAt}
+                />
+              )
+            )
           ) : (
             <p>You haven&apos;t taken any interviews yet</p>
           )}
         </div>
-      </section> */}
+      </section>
     </MainLayout>
   );
 };

@@ -7,7 +7,8 @@ export function useInterviewsApi() {
   return {
     getScheduledInterviews: (): Promise<PaginatedResponse<Interview>> => axiosInstance.get("/get-scheduled-interviews").then(res => res.data?.data),
     getInterviewSessionsByUser: (id: number): Promise<PaginatedResponse<InterviewSession>> => axiosInstance.get(`/get-interview-sessions-by-user/${id}`).then(res => res.data?.data),
-    startInterviewSession: (id: string) => axiosInstance.get(`/interview/${id}/start`).then(res => res.data?.data),
-    stopInterviewSession: (id: string, data: object) => axiosInstance.put(`/interview/${id}/end`, data).then(res => res.data),
+    getInterviewSessionByUUID: (uuid: string): Promise<InterviewSession> => axiosInstance.get(`/get-interview-session-by-uuid/${uuid}`).then(res => res.data?.data),
+    startInterviewSession: (uuid: string) => axiosInstance.post(`/interview/${uuid}/session/start`).then(res => res.data?.data),
+    stopInterviewSession: (uuid: string, data: object) => axiosInstance.put(`/interview/session/${uuid}/end`, data).then(res => res.data),
   };
 }

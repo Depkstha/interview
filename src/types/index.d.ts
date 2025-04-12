@@ -59,7 +59,7 @@ export interface InterviewSession {
   uuid: string;
   interview: Interview;
   interviewee: User;
-  feedback?: Feedback | null;
+  feedback: Feedback | null;
   questions: string[];
   status: string;
   startedAt: string;
@@ -71,7 +71,8 @@ export interface InterviewSessionCardProps {
   interviewSessionId: string;
   logo?: string;
   completedAt: string;
-  categories: string[];
+  feedback: Feedback | null;
+  categories: Category[];
 }
 
 export interface InterviewCardProps {
@@ -110,19 +111,10 @@ interface User {
   id: number;
 }
 
-interface InterviewCardProps {
-  interviewId?: string;
-  userId?: string;
-  role: string;
-  type: string;
-  techstack: string[];
-  createdAt?: string;
-}
-
 interface AgentProps {
   userName: string;
-  userId?: string;
-  interviewId?: string;
+  userId?: number;
+  interviewSessionId?: string;
   feedbackId?: string;
   type: "generate" | "interview";
   questions?: string[];

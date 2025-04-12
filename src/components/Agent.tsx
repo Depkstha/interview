@@ -1,13 +1,11 @@
-"use client";
+"user server";
 
-import Image from "next/image";
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
-
 import { cn } from "@/lib/utils";
-import { vapi } from "@/lib/vapi.sdk";
 import { interviewer } from "@/constants";
-import { createFeedback } from "@/lib/actions/general.action";
+import { useNavigate } from "react-router-dom";
+import { AgentProps } from "@/types";
+import { vapi } from "@/lib/vapi.sdk";
 
 enum CallStatus {
   INACTIVE = "INACTIVE",
@@ -24,12 +22,11 @@ interface SavedMessage {
 const Agent = ({
   userName,
   userId,
-  interviewId,
-  feedbackId,
+  // interviewSessionId,
   type,
   questions,
 }: AgentProps) => {
-  const router = useRouter();
+  // const navigate = useNavigate();
   const [callStatus, setCallStatus] = useState<CallStatus>(CallStatus.INACTIVE);
   const [messages, setMessages] = useState<SavedMessage[]>([]);
   const [isSpeaking, setIsSpeaking] = useState(false);
@@ -82,43 +79,43 @@ const Agent = ({
     };
   }, []);
 
-  useEffect(() => {
-    if (messages.length > 0) {
-      setLastMessage(messages[messages.length - 1].content);
-    }
+  // useEffect(() => {
+  //   if (messages.length > 0) {
+  //     setLastMessage(messages[messages.length - 1].content);
+  //   }
 
-    const handleGenerateFeedback = async (messages: SavedMessage[]) => {
-      console.log("handleGenerateFeedback");
+  //   const handleGenerateFeedback = async (messages: SavedMessage[]) => {
+  //     console.log("handleGenerateFeedback");
 
-      const { success, feedbackId: id } = await createFeedback({
-        interviewId: interviewId!,
-        userId: userId!,
-        transcript: messages,
-        feedbackId,
-      });
+  //     const { success, feedbackId: id } = await createFeedback({
+  //       interviewId: interviewId!,
+  //       userId: userId!,
+  //       transcript: messages,
+  //       feedbackId,
+  //     });
 
-      if (success && id) {
-        router.push(`/interview/${interviewId}/feedback`);
-      } else {
-        console.log("Error saving feedback");
-        router.push("/");
-      }
-    };
+  //     if (success && id) {
+  //       navigate(`/interview/${interviewId}/feedback`);
+  //     } else {
+  //       console.log("Error saving feedback");
+  //       navigate("/");
+  //     }
+  //   };
 
-    if (callStatus === CallStatus.FINISHED) {
-      if (type === "generate") {
-        router.push("/");
-      } else {
-        handleGenerateFeedback(messages);
-      }
-    }
-  }, [messages, callStatus, feedbackId, interviewId, router, type, userId]);
+  //   if (callStatus === CallStatus.FINISHED) {
+  //     if (type === "generate") {
+  //       navigate("/");
+  //     } else {
+  //       handleGenerateFeedback(messages);
+  //     }
+  //   }
+  // }, [messages, callStatus, feedbackId, interviewId, type, userId, navigate]);
 
   const handleCall = async () => {
     setCallStatus(CallStatus.CONNECTING);
 
     if (type === "generate") {
-      await vapi.start(process.env.NEXT_PUBLIC_VAPI_WORKFLOW_ID!, {
+      await vapi.start(import.meta.env.PUBLIC_VAPI_WORKFLOW_ID!, {
         variableValues: {
           username: userName,
           userid: userId,
@@ -132,7 +129,7 @@ const Agent = ({
           .join("\n");
       }
 
-      await vapi.start(interviewer, {
+      await vapi.start("104f3435-fae9-4fbb-9d0f-cf9a1e3bb76a", {
         variableValues: {
           questions: formattedQuestions,
         },
@@ -151,7 +148,7 @@ const Agent = ({
         {/* AI Interviewer Card */}
         <div className="card-interviewer">
           <div className="avatar">
-            <Image
+            <img
               src="/ai-avatar.png"
               alt="profile-image"
               width={65}
@@ -166,7 +163,7 @@ const Agent = ({
         {/* User Profile Card */}
         <div className="card-border">
           <div className="card-content">
-            <Image
+            <img
               src="/user-avatar.png"
               alt="profile-image"
               width={539}

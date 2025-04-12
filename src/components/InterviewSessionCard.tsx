@@ -1,0 +1,76 @@
+import dayjs from "dayjs";
+import DisplayCategoryBadges from "./DisplayCategoryBadges";
+import { Button } from "./ui/button";
+import { Link } from "react-router-dom";
+import { InterviewSessionCardProps } from "@/types";
+
+const InterviewSessionCard = ({
+  interviewSessionId,
+  title,
+  feedback,
+  categories,
+  completedAt,
+}: InterviewSessionCardProps) => {
+  const hasFeedback = !!feedback;
+  const formattedDate = dayjs(completedAt || Date.now()).format("MMM D, YYYY");
+
+  return (
+    <div className="card-border w-[360px] max-sm:w-full">
+      <div className="card-interview">
+        <div>
+          {/* Type Badge */}
+          <div className="absolute top-0 right-0 w-fit px-4 py-2 rounded-bl-lg bg-light-800">
+            <p className="badge-text ">UK</p>
+          </div>
+
+          {/* Cover Image */}
+          <img
+            src="https://th.bing.com/th/id/R.6695e86b5a4095843985e64cd9fee6e3?rik=rXwqCPGCXb9IVw&pid=ImgRaw&r=0"
+            alt="cover-image"
+            width={90}
+            height={90}
+            className="rounded-full object-fit size-[90px]"
+          />
+
+          {/* Interview Role */}
+          <h3 className="mt-5 capitalize">{title} Interview</h3>
+
+          {/* Date & Score */}
+          <div className="flex flex-row gap-5 mt-3">
+            <div className="flex flex-row gap-2">
+              <img src="/calendar.svg" width={22} height={22} alt="calendar" />
+              <p>{formattedDate}</p>
+            </div>
+
+            <div className="flex flex-row gap-2 items-center">
+              <img src="/star.svg" width={22} height={22} alt="star" />
+              <p>{feedback?.score || "0"}/100</p>
+            </div>
+          </div>
+
+          {/* Feedback or Placeholder Text */}
+          <article
+            className="prose lg:prose-xl dark:prose-invert max-w-none mt-5"
+            dangerouslySetInnerHTML={{
+              __html:
+                feedback?.finalAssessment ??
+                "Feedback is not available for this session.",
+            }}
+          />
+        </div>
+
+        <DisplayCategoryBadges categories={categories} />
+
+        <div className="flex flex-row justify-between">
+          <Button className="btn-primary" disabled={hasFeedback}>
+            <Link to={`/interview/session/${interviewSessionId}/feedback`}>
+              Check Feedback
+            </Link>
+          </Button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default InterviewSessionCard;
