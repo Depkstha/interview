@@ -99,24 +99,23 @@ export interface PaginatedResponse<T> {
 }
 
 interface CreateFeedbackParams {
-  interviewId: string;
-  userId: string;
+  interviewSessionId: string;
   transcript: { role: string; content: string }[];
-  feedbackId?: string;
+  callId: string;
 }
 
 interface User {
   name: string;
   email: string;
   id: number;
+  profile: string;
 }
 
 interface AgentProps {
   userName: string;
   userId?: number;
-  interviewSessionId?: string;
+  interviewSessionId: string;
   feedbackId?: string;
-  type: "generate" | "interview";
   questions?: string[];
 }
 

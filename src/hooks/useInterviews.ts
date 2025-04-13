@@ -1,7 +1,8 @@
 import { queryClient } from "@/lib/queryClient";
 import { useInterviewsApi } from "@/services/interviewServices";
 import { useAuthStore } from "@/stores/authStore";
-import { useQuery, useMutation } from "@tanstack/react-query";
+import { CreateFeedbackParams } from "@/types";
+import { useQuery, useMutation, useSuspenseQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 
 // Fetch All Scheduled Interviews
@@ -24,10 +25,9 @@ export function useInterviewSessions(id: number) {
 
 export function useInterviewSessionByUUID(uuid: string) {
   const { getInterviewSessionByUUID } = useInterviewsApi();
-  return useQuery({
+  return useSuspenseQuery({
     queryKey: ["interview-session", uuid],
     queryFn: () => getInterviewSessionByUUID(uuid),
-    enabled: !!uuid,
   });
 }
 
@@ -44,12 +44,13 @@ export function useStartInterviewSession() {
         state: { session: data.session, interview: data.interview },
       });
 
-      queryClient.invalidateQueries({ queryKey: ["interview-sessions", user?.id] }); 
-      
+      queryClient.invalidateQueries({
+        queryKey: ["interview-sessions", user?.id],
+      });
     },
     onError: (error) => {
-      console.error('Error starting session:', error);
-      alert('Failed to start interview session');
+      console.error("Error starting session:", error);
+      alert("Failed to start interview session");
     },
   });
 }
@@ -60,16 +61,32 @@ export function useStopInterviewSession() {
   const { stopInterviewSession } = useInterviewsApi();
 
   return useMutation({
-    mutationFn: ({ uuid, data }: { uuid: string; data: object }) => stopInterviewSession(uuid, data),
+    mutationFn: ({ uuid, data }: { uuid: string; data: object }) =>
+      stopInterviewSession(uuid, data),
     onSuccess: () => {
-
-      queryClient.invalidateQueries({ queryKey: ["interview-sessions", user?.id] });
-
+      queryClient.invalidateQueries({
+        queryKey: ["interview-sessions", user?.id],
+      });
     },
     onError: (error) => {
-      console.error('Error stopping session:', error);
-      alert('Failed to start interview session');
+      console.error("Error stopping session:", error);
+      alert("Failed to start interview session");
     },
   });
 }
 
+export function useCreateFeedback() {
+  const naviagate = useNavigate();
+  const { createFeedback } = useInterviewsApi();
+
+  return useMutation({
+    mutationFn: (data: CreateFeedbackParams) => createFeedback(data),
+    onSuccess: (data) => {
+      naviagate(`/interview/session/${data.sessionId}/feedback`);
+    },
+    onError: (error) => {
+      console.error("Error stopping session:", error);
+      alert("Failed to start interview session");
+    },
+  });
+}

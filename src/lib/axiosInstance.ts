@@ -26,7 +26,7 @@ axiosInstance.interceptors.response.use(
     error.message = message;
     
     if (error.response?.status === 401) {
-      useAuthStore.getState().logout();
+      useAuthStore.getState().clearAuth();
     }
     
     return Promise.reject(error);
