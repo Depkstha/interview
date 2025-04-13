@@ -83,6 +83,7 @@ export interface InterviewCardProps {
   logo?: string;
   createdAt: string;
   categories: Category[];
+  totalQuestions: number;
 }
 
 export interface PaginationMeta {

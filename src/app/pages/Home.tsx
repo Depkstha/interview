@@ -78,6 +78,7 @@ const Home = () => {
                 key={interview.id}
                 userId={(user as User).id}
                 title={interview.title}
+                totalQuestions={interview.totalQuestions}
                 interviewId={interview.uuid}
                 description={interview.description}
                 categories={interview.categories}

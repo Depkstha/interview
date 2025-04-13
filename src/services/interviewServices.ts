@@ -32,6 +32,6 @@ export function useInterviewsApi() {
         .then((res) => res.data),
 
     createFeedback: (data: CreateFeedbackParams) =>
-      axiosInstance.post(`/feedback/store`, data).then((res) => res.data),
+      axiosInstance.post(`/feedback/store`, data).then((res) => res.data?.data),
   };
 }

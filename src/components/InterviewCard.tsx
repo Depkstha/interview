@@ -7,6 +7,7 @@ import { useStartInterviewSession } from "@/hooks/useInterviews";
 const InterviewCard = ({
   title,
   interviewId,
+  totalQuestions,
   createdAt,
   categories,
   description,
@@ -58,7 +59,7 @@ const InterviewCard = ({
 
                 <div className="flex flex-row gap-2 items-center">
                   <img src="/star.svg" width={22} height={22} alt="star" />
-                  <p>{"---"}/100</p>
+                  <p>{totalQuestions}</p>
                 </div>
               </div>
             </div>

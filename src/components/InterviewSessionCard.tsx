@@ -15,7 +15,7 @@ const InterviewSessionCard = ({
   const formattedDate = dayjs(completedAt || Date.now()).format("MMM D, YYYY");
 
   return (
-    <div className="card-border w-[360px] max-sm:w-full">
+    <div className="card-border max-sm:w-full w-[360px]">
       <div className="card-interview">
         <div>
           {/* Type Badge */}
@@ -53,7 +53,7 @@ const InterviewSessionCard = ({
             className="prose lg:prose-xl dark:prose-invert max-w-none mt-5"
             dangerouslySetInnerHTML={{
               __html:
-                feedback?.finalAssessment ??
+                feedback?.finalAssessment.substring(0, 120) ??
                 "Feedback is not available for this session.",
             }}
           />

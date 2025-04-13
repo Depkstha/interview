@@ -4,6 +4,7 @@ import { useAuthStore } from "@/stores/authStore";
 import { CreateFeedbackParams } from "@/types";
 import { useQuery, useMutation, useSuspenseQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 // Fetch All Scheduled Interviews
 export function useInterviews() {
@@ -50,7 +51,7 @@ export function useStartInterviewSession() {
     },
     onError: (error) => {
       console.error("Error starting session:", error);
-      alert("Failed to start interview session");
+      toast.error("Interview session start failed!");
     },
   });
 }
@@ -70,7 +71,6 @@ export function useStopInterviewSession() {
     },
     onError: (error) => {
       console.error("Error stopping session:", error);
-      alert("Failed to start interview session");
     },
   });
 }
@@ -82,11 +82,11 @@ export function useCreateFeedback() {
   return useMutation({
     mutationFn: (data: CreateFeedbackParams) => createFeedback(data),
     onSuccess: (data) => {
-      naviagate(`/interview/session/${data.session_id}/feedback`);
+      naviagate(`/interview/session/${data.interviewSession.uuid}/feedback`);
     },
     onError: (error) => {
-      console.error("Error stopping session:", error);
-      alert("Failed to start interview session");
+      console.error("Error creating session:", error);
+      toast.error("Feedback generation failed!");
     },
   });
 }
