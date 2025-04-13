@@ -17,11 +17,7 @@ interface SavedMessage {
   content: string;
 }
 
-const Agent = ({
-  userName,
-  interviewSessionId,
-  questions,
-}: AgentProps) => {
+const Agent = ({ userName, interviewSessionId, questions }: AgentProps) => {
   const { mutate: createFeedback } = useCreateFeedback();
   const [callId, setCallId] = useState<string | null>(null);
   const [callStatus, setCallStatus] = useState<CallStatus>(CallStatus.INACTIVE);
@@ -82,11 +78,13 @@ const Agent = ({
     }
 
     const handleGenerateFeedback = (messages: SavedMessage[]) => {
-      createFeedback({
+      const payload = {
         callId: callId!,
         transcript: messages,
         interviewSessionId: interviewSessionId!,
-      });
+      };
+
+      createFeedback(payload);
     };
 
     if (callStatus === CallStatus.FINISHED) {
@@ -94,23 +92,23 @@ const Agent = ({
     }
   }, [callId, createFeedback, callStatus, interviewSessionId, messages]);
 
-  const handleCall = () => {
+  const handleCall = async () => {
     setCallStatus(CallStatus.CONNECTING);
-
     let formattedQuestions = "";
+
     if (questions) {
       formattedQuestions = questions
         .map((question) => `- ${question}`)
         .join("\n");
     }
 
-    const activeCall = vapi.start(interviewer, {
+    const activeCall = await vapi.start(interviewer, {
       variableValues: {
         questions: formattedQuestions,
       },
     });
 
-    setCallId(activeCall.id!);
+    setCallId(activeCall?.id || null);
   };
 
   const handleDisconnect = () => {
@@ -120,10 +118,6 @@ const Agent = ({
 
   return (
     <>
-    <div>
-      <p>{callId}</p>
-      <p>{lastMessage}</p>
-    </div>
       <div className="call-view">
         {/* AI Interviewer Card */}
         <div className="card-interviewer">

@@ -82,7 +82,7 @@ export function useCreateFeedback() {
   return useMutation({
     mutationFn: (data: CreateFeedbackParams) => createFeedback(data),
     onSuccess: (data) => {
-      naviagate(`/interview/session/${data.sessionId}/feedback`);
+      naviagate(`/interview/session/${data.session_id}/feedback`);
     },
     onError: (error) => {
       console.error("Error stopping session:", error);

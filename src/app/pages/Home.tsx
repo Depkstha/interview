@@ -4,8 +4,6 @@ import { User } from "@/types";
 import MainLayout from "../layouts/MainLayout";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Terminal } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
 import InterviewCard from "@/components/InterviewCard";
 import { Skeleton } from "@/components/ui/skeleton";
 import InterviewSessionCard from "@/components/InterviewSessionCard";
@@ -53,10 +51,6 @@ const Home = () => {
           <p className="text-lg">
             Practice real interview questions & get instant feedback
           </p>
-
-          <Button asChild className="btn-primary max-sm:w-full">
-            <Link to="/interview">Start an Interview</Link>
-          </Button>
         </div>
 
         <img
