@@ -10,6 +10,8 @@ import MainLayout from "../layouts/MainLayout";
 import SkeletonLoader from "@/components/SkeletonLoader";
 import { Suspense } from "react";
 import { CallSession, Feedback as FeedbackType } from "@/types";
+import { getcallEndedReason } from "@/lib/utils";
+import Player from "@/components/Player";
 import AudioPlayer from "@/components/AudioPlayer";
 
 const Feedback = () => {
@@ -46,8 +48,8 @@ const Feedback = () => {
             </h1>
           </div>
 
-          <div className="flex flex-row justify-center ">
-            <div className="flex flex-row gap-5">
+          <div className="flex flex-row justify-center">
+            <div className="flex flex-col lg:flex-row gap-5">
               {/* Overall Impression */}
               <div className="flex flex-row gap-2 items-center">
                 <img src="/star.svg" width={22} height={22} alt="star" />
@@ -74,6 +76,22 @@ const Feedback = () => {
                     : "-"}
                 </p>
               </div>
+
+              {/* Session End */}
+              <div className="flex flex-row gap-2 items-center">
+              <img
+                  src="/interview.svg"
+                  width={22}
+                  height={22}
+                  alt="calendar"
+                />
+                <p>
+                  Session End:{" "}
+                  <span className="text-primary-200 font-bold">
+                    {getcallEndedReason(callSession.endedReason)}
+                  </span>
+                </p>
+              </div>
             </div>
           </div>
 
@@ -81,7 +99,7 @@ const Feedback = () => {
 
           <p>{feedback?.finalAssessment}</p>
 
-          <AudioPlayer />
+          <AudioPlayer audioUrl={callSession.stereoRecordingUrl} />
 
           {/* Interview Breakdown */}
           <div className="flex flex-col gap-4">

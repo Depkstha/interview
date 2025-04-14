@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -28,7 +28,7 @@ const AuthForm = ({ type }: { type: FormType }) => {
     isPending: isLoginPending,
     error: loginError,
   } = useLogin();
-  
+
   const {
     mutate: signup,
     isPending: isSignupPending,
@@ -69,7 +69,7 @@ const AuthForm = ({ type }: { type: FormType }) => {
         {
           onSuccess: () => {
             toast.success("Account created successfully. Please sign in.");
-            navigate("/log-in");
+            navigate("/login");
           },
           onError: (error) => {
             toast.error(error.message || "Signup failed");
@@ -138,13 +138,9 @@ const AuthForm = ({ type }: { type: FormType }) => {
         </Form>
 
         <p className="text-center">
-          {isSignIn ? "No account yet?" : "Have an account already?"}
-          <Link
-            to={isSignIn ? "/sign-up" : "/log-in"}
-            className="font-bold text-user-primary ml-1"
-          >
-            {isSignIn ? "Sign Up" : "Log In"}
-          </Link>
+          {isSignIn
+            ? "No account yet? Please contact Administrator."
+            : "Have an account already?"}
         </p>
       </div>
     </div>

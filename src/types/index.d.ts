@@ -166,3 +166,7 @@ interface InterviewFormProps {
 interface InterviewCategoryProps {
   categories: Category[];
 }
+
+interface AudioPlayerProps {
+  audioUrl: string;
+}

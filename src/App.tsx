@@ -6,14 +6,21 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import Home from "./app/pages/Home";
 import InterviewSession from "./app/pages/InterviewSession";
 import Feedback from "./app/pages/Feedback";
+import RedirectIfAuthenticated from "./components/RedirectIfAuthenticated";
 
 function App() {
   return (
     <>
       <Router>
         <Routes>
-          <Route path="/log-in" element={<LogInForm />} />
-          <Route path="/sign-up" element={<SignUpForm />} />
+          <Route
+            path="/login"
+            element={
+              <RedirectIfAuthenticated>
+                <LogInForm />
+              </RedirectIfAuthenticated>
+            }
+          />
           <Route element={<ProtectedRoute />}>
             <Route path="/" element={<Home />} />
             <Route

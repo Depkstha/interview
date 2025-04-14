@@ -5,10 +5,9 @@ const ProtectedRoute = () => {
   const { token, user } = useAuthStore();
 
   console.log(token, user);
-  
 
   if (!token || !user) {
-    return <Navigate to="/log-in" replace />;
+    return <Navigate to="/login" replace />;
   }
 
   return <Outlet />;
