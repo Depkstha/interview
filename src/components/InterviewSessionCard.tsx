@@ -62,7 +62,7 @@ const InterviewSessionCard = ({
         <DisplayCategoryBadges categories={categories} />
 
         <div className="flex flex-row justify-between">
-          <Button className="btn-primary" disabled={hasFeedback}>
+          <Button className="btn-primary" disabled={!hasFeedback}>
             <Link to={`/interview/session/${interviewSessionId}/feedback`}>
               Check Feedback
             </Link>

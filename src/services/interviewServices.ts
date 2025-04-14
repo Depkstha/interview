@@ -21,6 +21,10 @@ export function useInterviewsApi() {
         .get(`/get-interview-session-by-uuid/${uuid}`)
         .then((res) => res.data?.data),
 
+    getFeedbackByInterviewSessionUUID: (uuid: string) => 
+      axiosInstance.get(`/interview/session/${uuid}/feedback`)
+      .then(res => res.data?.data),
+
     startInterviewSession: (uuid: string) =>
       axiosInstance
         .post(`/interview/${uuid}/session/start`)

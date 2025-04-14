@@ -5,6 +5,7 @@ import LogInForm from "./app/auth/components/LogInForm";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Home from "./app/pages/Home";
 import InterviewSession from "./app/pages/InterviewSession";
+import Feedback from "./app/pages/Feedback";
 
 function App() {
   return (
@@ -18,6 +19,10 @@ function App() {
             <Route
               path="/interview/session/:uuid"
               element={<InterviewSession />}
+            />
+            <Route
+              path="/interview/session/:uuid/feedback"
+              element={<Feedback />}
             />
           </Route>
         </Routes>

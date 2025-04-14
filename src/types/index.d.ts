@@ -20,6 +20,12 @@ export interface Category {
   title: string;
 }
 
+export interface CallSession {
+  id: string;
+  stereoRecordingUrl: string;
+  endedReason: string;
+}
+
 export interface Question {
   id: number;
   title: string;

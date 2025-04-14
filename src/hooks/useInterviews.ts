@@ -32,6 +32,14 @@ export function useInterviewSessionByUUID(uuid: string) {
   });
 }
 
+export function useFeedbackByInterviewSessionUUID(uuid: string) {
+  const { getFeedbackByInterviewSessionUUID } = useInterviewsApi();
+  return useSuspenseQuery({
+    queryKey: ["feedback", uuid],
+    queryFn: () => getFeedbackByInterviewSessionUUID(uuid),
+  });
+}
+
 //Start a session
 export function useStartInterviewSession() {
   const { user } = useAuthStore();
