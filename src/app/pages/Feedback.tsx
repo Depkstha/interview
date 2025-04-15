@@ -11,7 +11,6 @@ import SkeletonLoader from "@/components/SkeletonLoader";
 import { Suspense } from "react";
 import { CallSession, Feedback as FeedbackType } from "@/types";
 import { getcallEndedReason } from "@/lib/utils";
-import Player from "@/components/Player";
 import AudioPlayer from "@/components/AudioPlayer";
 
 const Feedback = () => {
@@ -22,8 +21,6 @@ const Feedback = () => {
   const { data: interviewSession } = useInterviewSessionByUUID(
     interviewSessionId!
   );
-
-  console.log(data);
 
   const callSession: CallSession = data.callSession;
   const feedback: FeedbackType = data.feedback;
