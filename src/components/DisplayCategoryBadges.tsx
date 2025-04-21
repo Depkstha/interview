@@ -5,9 +5,9 @@ const DisplayCategoryBadges = ({ categories }: InterviewCategoryProps) => {
   console.log(categories);
 
   return (
-    <div className="flex flex-column gap-1">
+    <div className="flex flex-column flex-wrap gap-1">
       {categories.map(({ id, title }) => (
-        <Badge key={id}>{title}</Badge>
+        <Badge className="mt-2" key={id}>{title}</Badge>
       ))}
     </div>
   );

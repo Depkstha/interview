@@ -1,11 +1,9 @@
-import { Suspense } from "react";
 import MainLayout from "../layouts/MainLayout";
 import { useParams } from "react-router-dom";
 import { useAuthStore } from "@/stores/authStore";
 import { useInterviewSessionByUUID } from "@/hooks/useInterviews";
 import Agent from "@/components/Agent";
 import { User } from "@/types";
-import SkeletonLoader from "@/components/SkeletonLoader";
 
 const InterviewSession = () => {
   const { user } = useAuthStore();
@@ -16,11 +14,8 @@ const InterviewSession = () => {
     interviewSessionId!
   );
 
-  console.log(interviewSession);
-
   return (
     <MainLayout>
-      <Suspense fallback={<SkeletonLoader />}>
         <div className="flex flex-row gap-4 justify-between">
           <div className="flex flex-row gap-4 items-center max-sm:flex-col">
             <div className="flex flex-row gap-4 items-center">
@@ -46,7 +41,6 @@ const InterviewSession = () => {
           interviewSessionId={interviewSession.uuid}
           questions={interviewSession.questions}
         />
-      </Suspense>
     </MainLayout>
   );
 };

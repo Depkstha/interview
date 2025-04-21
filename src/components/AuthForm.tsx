@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import FormField from "./FormField";
 import { useLogin } from "@/app/auth/hooks/useLogin";
 import { useSignup } from "@/app/auth/hooks/useSignup";
+import { LoaderCircle } from "lucide-react";
 
 type FormType = "sign-in" | "sign-up";
 
@@ -26,13 +27,11 @@ const AuthForm = ({ type }: { type: FormType }) => {
   const {
     mutate: login,
     isPending: isLoginPending,
-    error: loginError,
   } = useLogin();
 
   const {
     mutate: signup,
     isPending: isSignupPending,
-    error: signupError,
   } = useSignup();
 
   const formSchema = authFormSchema(type);
@@ -51,11 +50,12 @@ const AuthForm = ({ type }: { type: FormType }) => {
         { email: data.email, password: data.password },
         {
           onSuccess: () => {
-            toast.success("Signed in successfully.");
+            toast.success("Signed in successfully");
             navigate("/");
           },
           onError: (error) => {
-            toast.error(error.message || "Login failed");
+            console.log(error);
+            toast.error("Invalid Credentials");
           },
         }
       );
@@ -125,15 +125,9 @@ const AuthForm = ({ type }: { type: FormType }) => {
               type="submit"
               disabled={isLoginPending || isSignupPending}
             >
+              {(isLoginPending || isSignupPending) && <LoaderCircle className="h-4 w-4 animate-spin" />}
               {isSignIn ? "Sign In" : "Create an Account"}
-              {(isLoginPending || isSignupPending) && "..."}
             </Button>
-
-            {(loginError || signupError) && (
-              <p className="text-red-500 text-sm">
-                {loginError?.message || signupError?.message}
-              </p>
-            )}
           </form>
         </Form>
 

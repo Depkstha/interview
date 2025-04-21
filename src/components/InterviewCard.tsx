@@ -3,6 +3,7 @@ import { Button } from "./ui/button";
 import { InterviewCardProps } from "@/types";
 import DisplayCategoryBadges from "./DisplayCategoryBadges";
 import { useStartInterviewSession } from "@/hooks/useInterviews";
+import { LoaderCircle } from "lucide-react";
 
 const InterviewCard = ({
   title,
@@ -80,7 +81,8 @@ const InterviewCard = ({
             disabled={isPending}
             className="btn-primary w-full"
           >
-            {isPending ? "Starting..." : "Start Interview"}
+            {isPending && <LoaderCircle className="h-4 w-4 animate-spin" />} 
+            Start Interview
           </Button>
         </div>
       </div>

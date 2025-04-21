@@ -4,6 +4,8 @@ import { interviewer } from "@/constants";
 import { AgentProps } from "@/types";
 import { vapi } from "@/lib/vapi.sdk";
 import { useCreateFeedback } from "@/hooks/useInterviews";
+import { Ellipsis, LoaderCircle } from "lucide-react";
+import { toast } from "sonner";
 
 enum CallStatus {
   INACTIVE = "INACTIVE",
@@ -18,7 +20,6 @@ interface SavedMessage {
 }
 
 const Agent = ({ userName, interviewSessionId, questions }: AgentProps) => {
-
   const { mutate: createFeedback } = useCreateFeedback();
   const [callId, setCallId] = useState<string | null>(null);
   const [callStatus, setCallStatus] = useState<CallStatus>(CallStatus.INACTIVE);
@@ -33,6 +34,7 @@ const Agent = ({ userName, interviewSessionId, questions }: AgentProps) => {
 
     const onCallEnd = () => {
       setCallStatus(CallStatus.FINISHED);
+      console.log("Call Ended");
     };
 
     const onMessage = (message: Message) => {
@@ -89,6 +91,9 @@ const Agent = ({ userName, interviewSessionId, questions }: AgentProps) => {
     };
 
     if (callStatus === CallStatus.FINISHED) {
+      toast.success(
+        "Generating feedback. This may take a moment. Thank you for your patience."
+      );
       handleGenerateFeedback(messages);
     }
   }, [callId, createFeedback, callStatus, interviewSessionId, messages]);
@@ -139,7 +144,7 @@ const Agent = ({ userName, interviewSessionId, questions }: AgentProps) => {
         <div className="card-border">
           <div className="card-content">
             <img
-              src="/user-avatar.png"
+              src="/user-avatar.svg"
               alt="profile-image"
               width={539}
               height={539}
@@ -167,25 +172,37 @@ const Agent = ({ userName, interviewSessionId, questions }: AgentProps) => {
       )}
 
       <div className="w-full flex justify-center">
-        {callStatus !== "ACTIVE" ? (
+        {callStatus === "INACTIVE" ? (
           <button className="relative btn-call" onClick={() => handleCall()}>
-            <span
-              className={cn(
-                "absolute animate-ping rounded-full opacity-75",
-                callStatus !== "CONNECTING" && "hidden"
-              )}
-            />
-
-            <span className="relative">
-              {callStatus === "INACTIVE" || callStatus === "FINISHED"
-                ? "Call"
-                : ". . ."}
-            </span>
+            Call
           </button>
         ) : (
-          <button className="btn-disconnect" onClick={() => handleDisconnect()}>
-            End
-          </button>
+          <div className="flex gap-2">
+            <button className="btn-secondary" disabled={true}>
+              <span className="relative flex gap-2 items-center">
+                <Ellipsis className="w-4 h-4 animate-ping" />
+              </span>
+            </button>
+
+            {callStatus === "FINISHED" ? (
+              <button
+                className="btn-disconnect"
+                disabled={true}
+                onClick={() => handleDisconnect()}
+              >
+                <span className="relative flex gap-2 items-center">
+                  <LoaderCircle className="w-4 h-4 animate-spin" /> End
+                </span>
+              </button>
+            ) : (
+              <button
+                className={cn("btn-disconnect")}
+                onClick={() => handleDisconnect()}
+              >
+                End
+              </button>
+            )}
+          </div>
         )}
       </div>
     </>
