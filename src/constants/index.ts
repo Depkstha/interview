@@ -98,7 +98,64 @@ export const interviewer: CreateAssistantDTO = {
         `
       }
     ]
-  }
+  },
+  "backgroundDenoisingEnabled": true,
+  "endCallPhrases": [
+    "Let's End this call",
+    "End this call",
+  ],
+  "stopSpeakingPlan": {
+    "numWords": 5,
+    "voiceSeconds": 1,
+    "backoffSeconds": 3,
+    "acknowledgementPhrases": [
+      "i understand",
+      "i see",
+      "i got it",
+      "i hear you",
+      "im listening",
+      "im with you",
+      "right",
+      "okay",
+      "ok",
+      "sure",
+      "alright",
+      "got it",
+      "understood",
+      "yeah",
+      "yes",
+      "uh-huh",
+      "mm-hmm",
+      "gotcha",
+      "mhmm",
+      "ah",
+      "yeah okay",
+      "yeah sure"
+    ],
+    "interruptionPhrases": [
+      "stop",
+      "shut",
+      "up",
+      "enough",
+      "quiet",
+      "silence",
+      "but",
+      "dont",
+      "not",
+      "no",
+      "hold",
+      "wait",
+      "cut",
+      "pause",
+      "nope",
+      "nah",
+      "nevermind",
+      "never",
+      "bad",
+      "actually"
+    ]
+  },
+  "silenceTimeoutSeconds": 10,
 };
 
 
