@@ -1,8 +1,10 @@
 import dayjs from "dayjs";
 import DisplayCategoryBadges from "./DisplayCategoryBadges";
 import { Button } from "./ui/button";
-import { Link } from "react-router-dom";
 import { InterviewSessionCardProps } from "@/types";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { LoaderCircle } from "lucide-react";
 
 const InterviewSessionCard = ({
   interviewSessionId,
@@ -11,8 +13,14 @@ const InterviewSessionCard = ({
   categories,
   completedAt,
 }: InterviewSessionCardProps) => {
-  const hasFeedback = !!feedback;
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
   const formattedDate = dayjs(completedAt || Date.now()).format("MMM D, YYYY");
+
+  const handleFeedback = () => {
+    setLoading(true);
+    navigate(`/interview/session/${interviewSessionId}/feedback`);
+  };
 
   return (
     <div className="card-border max-sm:w-full w-[360px]">
@@ -44,7 +52,7 @@ const InterviewSessionCard = ({
 
             <div className="flex flex-row gap-2 items-center">
               <img src="/star.svg" width={22} height={22} alt="star" />
-              <p>{feedback?.score || "0"}/100</p>
+              <p>{Math.round(feedback?.score || 0)}/100</p>
             </div>
           </div>
 
@@ -62,10 +70,13 @@ const InterviewSessionCard = ({
         <DisplayCategoryBadges categories={categories} />
 
         <div className="flex flex-row justify-between">
-          <Button className="btn-primary" disabled={!hasFeedback}>
-            <Link to={`/interview/session/${interviewSessionId}/feedback`}>
-              Check Feedback
-            </Link>
+          <Button
+            className="btn-primary"
+            onClick={() => handleFeedback()}
+            disabled={loading}
+          >
+            {loading && <LoaderCircle className="w-4 h-4 animate-spin" />} Check
+            Feedback
           </Button>
         </div>
       </div>
