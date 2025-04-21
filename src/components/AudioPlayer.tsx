@@ -3,11 +3,16 @@ import { Play, Pause, Volume2, VolumeX } from "lucide-react";
 import { AudioPlayerProps } from "@/types";
 
 const formatTime = (time: number) => {
-  const minutes = Math.floor(time / 60);
-  const seconds = Math.floor(time % 60)
-    .toString()
-    .padStart(2, "0");
-  return `${minutes}:${seconds}`;
+  
+  if(time > 0) {
+    const minutes = Math.floor(time / 60);
+    const seconds = Math.floor(time % 60)
+      .toString()
+      .padStart(2, "0");
+      return `${minutes}:${seconds}`;
+  }
+
+  return "00:00";
 };
 
 const AudioPlayer = ({ audioUrl }: AudioPlayerProps) => {
@@ -44,6 +49,9 @@ const AudioPlayer = ({ audioUrl }: AudioPlayerProps) => {
     };
 
     const setAudioDuration = () => setDuration(audio.duration);
+
+    console.log(duration);
+
     const handleEnded = () => {
       setIsPlaying(false);
       setCurrentTime(0);
