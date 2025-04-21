@@ -106,7 +106,7 @@ export const interviewer: CreateAssistantDTO = {
   ],
   "stopSpeakingPlan": {
     "numWords": 5,
-    "voiceSeconds": 1,
+    "voiceSeconds": 0.5,
     "backoffSeconds": 3,
     "acknowledgementPhrases": [
       "i understand",
