@@ -9,6 +9,14 @@ export interface Feedback {
     score: number;
     comment: string;
   }>;
+  counselorScore: number;
+  counselorCategoryScores: Array<{
+    name: string;
+    score: number;
+    comment: string;
+  }>;
+  counselor: User;
+  counselorFinalAssessment: string;
   strengths: string[];
   areasForImprovement: string[];
   finalAssessment: string;
@@ -53,6 +61,8 @@ export interface Interview {
   interviewType: InterviewType;
   categories: Category[];
   title: string;
+  liveFeedbackEnabled: boolean;
+  aiFeedbackEnabled: boolean;
   description: string;
   totalQuestions: number;
   status: string;
@@ -86,6 +96,7 @@ export interface InterviewCardProps {
   interviewId: string;
   description: string;
   userId: number;
+  liveFeedbackEnabled: boolean;
   logo?: string;
   createdAt: string;
   categories: Category[];
@@ -123,6 +134,7 @@ interface AgentProps {
   userId?: number;
   interviewSessionId: string;
   feedbackId?: string;
+  liveFeedbackEnabled: boolean;
   questions?: string[];
 }
 

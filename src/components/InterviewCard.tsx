@@ -9,6 +9,7 @@ const InterviewCard = ({
   title,
   interviewId,
   totalQuestions,
+  liveFeedbackEnabled,
   createdAt,
   categories,
   description,
@@ -62,6 +63,18 @@ const InterviewCard = ({
                   <img src="/question.svg" width={22} height={22} alt="star" />
                   <p>{totalQuestions}</p>
                 </div>
+
+                {liveFeedbackEnabled && (
+                  <div className="flex flex-row gap-2">
+                    <img
+                      src="/star.svg"
+                      width={22}
+                      height={22}
+                      alt="live feedback"
+                    />
+                    <p className="text-green-700">Live Feedback Enabled</p>
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -81,7 +94,7 @@ const InterviewCard = ({
             disabled={isPending}
             className="btn-primary w-full"
           >
-            {isPending && <LoaderCircle className="h-4 w-4 animate-spin" />} 
+            {isPending && <LoaderCircle className="h-4 w-4 animate-spin" />}
             Start Interview
           </Button>
         </div>

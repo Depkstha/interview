@@ -38,6 +38,7 @@ const InterviewSession = () => {
         <Agent
           userName={(user as User).name}
           userId={(user as User).id}
+          liveFeedbackEnabled={interviewSession.interview.liveFeedbackEnabled}
           interviewSessionId={interviewSession.uuid}
           questions={interviewSession.questions}
         />

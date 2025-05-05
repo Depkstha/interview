@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { interviewer } from "@/constants";
+import { interviewerTwo } from "@/constants";
 import { AgentProps } from "@/types";
 import { vapi } from "@/lib/vapi.sdk";
 import { useCreateFeedback } from "@/hooks/useInterviews";
@@ -19,7 +20,7 @@ interface SavedMessage {
   content: string;
 }
 
-const Agent = ({ userName, interviewSessionId, questions }: AgentProps) => {
+const Agent = ({ userName, interviewSessionId, questions, liveFeedbackEnabled }: AgentProps) => {
   const { mutate: createFeedback } = useCreateFeedback();
   const [callId, setCallId] = useState<string | null>(null);
   const [callStatus, setCallStatus] = useState<CallStatus>(CallStatus.INACTIVE);
@@ -107,8 +108,10 @@ const Agent = ({ userName, interviewSessionId, questions }: AgentProps) => {
         .map((question) => `- ${question}`)
         .join("\n");
     }
-
-    const activeCall = await vapi.start(interviewer, {
+    
+    const interviewerOptions = liveFeedbackEnabled ? interviewerTwo : interviewer;
+    console.log(liveFeedbackEnabled, interviewerOptions);
+    const activeCall = await vapi.start(interviewerOptions, {
       variableValues: {
         questions: formattedQuestions,
       },
